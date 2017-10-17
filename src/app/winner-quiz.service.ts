@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { randomIntFromInterval } from '../utils/utils';
+import { randomIntFromInterval, shuffle } from '../utils/utils';
 import { ergastURL, raceResultsURL } from '../utils/constants';
 import { Question } from '../models/question';
 
@@ -8,18 +8,14 @@ import { Question } from '../models/question';
 @Injectable()
 export class WinnerQuizService {
 
-  private _numberOfQuestions: number;
   private _alreadyAsked: String[] = []; // idea: instead of tuple: YYYYRR (year+racenumber)
   private _falseAnswerCount: number;
   private _correctAnswerCount: number;
   private _answeredQuestions: Question[] = [];
   private _currentQuestion: Question;
+  private _yearRange: number[] = [1950, new Date().getFullYear()]; // those are the default values
 
   constructor(private http: Http) { }
-
-  init (numberOfQuestions: number) {
-    this._numberOfQuestions = numberOfQuestions;
-  }
 
   get currentQuestion() {
     return this._currentQuestion;
@@ -37,6 +33,20 @@ export class WinnerQuizService {
     return this._answeredQuestions;
   }
 
+  set yearRange(range) {
+    // validate input first
+    if (range[0] > range[1]) {
+      return;
+    }
+    if (range[0] < 1950) {
+      range[0] = 1950;
+    }
+    if (range[1] > new Date().getFullYear()) {
+      range[1] = new Date().getFullYear();
+    }
+    this._yearRange = range;
+  }
+
 
   answerQuestion(answerIndex: number) {
     // was the question answered correctly?
@@ -47,6 +57,9 @@ export class WinnerQuizService {
       this._falseAnswerCount++;
       this._currentQuestion.correct = false;
     }
+
+    console.log('question answered');
+    console.log(this._currentQuestion);
     // push to [] of answered questions
     this._answeredQuestions.push(this._currentQuestion);
   }
@@ -54,8 +67,8 @@ export class WinnerQuizService {
   // finds a question which we have not asked yet, generates answers to the question
   // (weighted by finishing position), and sets the currentQuestion.
   async getNewQuestion(): Promise<any> {
-    // 1. get random season between 1950 and current year
-    const year = randomIntFromInterval(1950, new Date().getFullYear()); // TODO: those two could be parameters
+    // 1. get random season between the two years (standard: 1950 and current year)
+    const year = randomIntFromInterval(this._yearRange[0], this._yearRange[1]);
     // 2. send the request
     const raceResults = await this.getRaceResults(year, 1);
 
@@ -87,7 +100,7 @@ export class WinnerQuizService {
     selectedDrivers.push(correctAnswer);
 
     // shuffle answers & save new index of the correct answer
-    this.shuffle(selectedDrivers);
+    shuffle(selectedDrivers);
 
     // create question
     const raceName = raceResults.RaceTable.Races[raceNumber].raceName;
@@ -107,15 +120,6 @@ export class WinnerQuizService {
 
   private getRaceId(year: number, raceNumber: number) {
     return `${year}${raceNumber}`;
-  }
-
-  // TODO: externalize
-  // shuffles an array. Side effects!
-  private shuffle(a: any[]) {
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
   }
 
   private selectFromWheelOfFortune(quantity: number, wheelOfFortune: any[]): String[] {
@@ -192,8 +196,8 @@ export class WinnerQuizService {
       return previous + listOfPoints[driverName];
     }, 0);
 
-    // TODO: i guess a list is better here, inside either an array [number, string], or some object.
-    // 2. create a ranged array like: [{0: 'Sebastian Vettel'}, {0.123: 'Lewis Hamilton'}, {0.33: 'Kimi Raikkonen'}, ...]
+    // 2. create a ranged array like: [{lowerBound: 0, upperBound: 0.123: driverName: 'Sebastian Vettel'},
+    //  {lowerBound: 0.123, upperBound: 0.333, driverName: 'Lewis Hamilton'}, {lowerBound: 0.33 ...}, ...]
     const wheelOfFortune: Object[] = [];
     let lowerBound = 0;
     let counter = 0;

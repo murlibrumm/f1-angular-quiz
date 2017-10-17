@@ -13,7 +13,10 @@ import { HttpModule } from '@angular/http';
     BrowserModule,
     HttpModule,
   ],
-  providers: [WinnerQuizService], // Dependency Injection!
+  providers: [
+    {provide: 'quizService', useClass: WinnerQuizService},
+    {provide: 'numberOfQuestions', useValue: 10},
+ ], // Dependency Injection!
   bootstrap: [AppComponent]
 })
 export class AppModule { }

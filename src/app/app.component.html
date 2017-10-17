@@ -10,6 +10,7 @@
 </div>-->
 
 <div>{{currentQuestion.question}}</div> 
-<div *ngFor="let answer of currentQuestion.answers" class="answer">
+<div *ngFor="let answer of currentQuestion.answers; let i = index" [attr.data-index]="i" 
+  class="answer" (click)="answerQuestion(i)">
   {{answer}}
 </div>

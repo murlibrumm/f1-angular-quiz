@@ -1,5 +1,13 @@
 const randomIntFromInterval = (min, max) => { // TODO externalize
-    return Math.floor(Math.random() * (max - min + 1) + min);
+  return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-export { randomIntFromInterval };
+// shuffles an array. Side effects!
+const shuffle = (a: any[]) => {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+};
+
+export { randomIntFromInterval, shuffle };
