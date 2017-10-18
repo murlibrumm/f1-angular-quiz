@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { randomIntFromInterval, shuffle } from '../utils/utils';
 import { ergastURL, raceResultsURL } from '../utils/constants';
 import { Question } from '../models/question';
+import 'rxjs/add/operator/map';
 
 
 @Injectable()

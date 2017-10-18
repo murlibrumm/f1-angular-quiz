@@ -1,7 +1,5 @@
 import { Question } from '../models/question';
-import { Component, Inject } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
-import 'rxjs/add/operator/map';
+import { Component, Inject, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +7,7 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Welcome to the F1-Quiz!';
   currentQuestion: Promise<Question>;
   answered: Boolean = false;
@@ -18,7 +16,10 @@ export class AppComponent {
   constructor(
     @Inject('quizService') private winnerQuizService,
     @Inject('numberOfQuestions') private numberOfQuestions: number) {
-    winnerQuizService.yearRange = [2000, 2017];
+  }
+
+  ngOnInit() {
+    this.winnerQuizService.yearRange = [2000, 2017];
     this.getNextQuestion();
   }
 

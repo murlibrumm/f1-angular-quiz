@@ -1,13 +1,19 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
+<div class="text-center">
   <h1>
     {{title}}
   </h1>
+  <h2>
+    {{(currentQuestion | async)?.question}}
+  </h2> 
+  <div class="answerBox" *ngIf="(currentQuestion | async)">
+    <button type="button" class="btn btn-primary" 
+    *ngFor="let answer of (currentQuestion | async)?.answers" [attr.data-index]="i" (click)="answerQuestion(i)" >
+      {{answer}}
+    </button>
+  </div>
 </div>
-<div>{{(currentQuestion | async)?.question}}</div> 
-<div *ngFor="let answer of (currentQuestion | async)?.answers" class="answer">
-  {{answer}}
-</div>
+
 
 <!--
 SAME CODE WITH NGIF 
