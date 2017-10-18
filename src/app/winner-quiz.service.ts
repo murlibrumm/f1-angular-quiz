@@ -66,7 +66,7 @@ export class WinnerQuizService {
 
   // finds a question which we have not asked yet, generates answers to the question
   // (weighted by finishing position), and sets the currentQuestion.
-  async getNewQuestion(): Promise<any> {
+  async getNewQuestion(): Promise<Question> {
     // 1. get random season between the two years (standard: 1950 and current year)
     const year = randomIntFromInterval(this._yearRange[0], this._yearRange[1]);
     // 2. send the request
@@ -111,7 +111,7 @@ export class WinnerQuizService {
     );
 
     console.log(this._currentQuestion);
-    return new Promise((resolve, reject) => {
+    return new Promise<Question>((resolve, reject) => {
       resolve(this._currentQuestion);
     });
 

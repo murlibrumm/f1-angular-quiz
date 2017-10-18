@@ -4,13 +4,17 @@
     {{title}}
   </h1>
 </div>
-<!--<div>{{(currentQuestion | async)?.question}}</div> 
-<div *ngFor="let answer of (currentQuestion | async)?.answers?" class="answer">
-  {{answer}}
-</div>-->
-
-<div>{{currentQuestion.question}}</div> 
-<div *ngFor="let answer of currentQuestion.answers; let i = index" [attr.data-index]="i" 
-  class="answer" (click)="answerQuestion(i)">
+<div>{{(currentQuestion | async)?.question}}</div> 
+<div *ngFor="let answer of (currentQuestion | async)?.answers" class="answer">
   {{answer}}
 </div>
+
+<!--
+SAME CODE WITH NGIF 
+<div *ngIf="(currentQuestion | async) as c">{{c.question}}</div> 
+  <div *ngIf="(currentQuestion | async) as c">
+    <div *ngFor="let answer of c.answers; let i = index" [attr.data-index]="i" 
+      class="answer" (click)="answerQuestion(i)">
+      {{answer}}
+  </div>
+</div>-->

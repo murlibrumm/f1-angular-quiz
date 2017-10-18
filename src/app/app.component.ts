@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 
 export class AppComponent {
   title = 'Welcome to the F1-Quiz!';
-  currentQuestion: Promise<Question>|null = null;
+  currentQuestion: Promise<Question>;
   answered: Boolean = false;
 
   // advantage via @Inject: we do not have to import the class WinnerQuizService here => no Dependency
@@ -23,7 +23,10 @@ export class AppComponent {
   }
 
   async getNextQuestion() {
-    this.currentQuestion = await this.winnerQuizService.getNewQuestion();
+    // we do not need await here => await waits for the promise to be resolved, but we do not care, because our
+    // template handles the promise for us (currentQuestions | async)
+    // so actually, with await this would not work!
+    this.currentQuestion = this.winnerQuizService.getNewQuestion();
     this.answered = false;
   }
 
