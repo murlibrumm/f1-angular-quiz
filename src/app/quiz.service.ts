@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 
 
 @Injectable()
-export class WinnerQuizService {
+export class QuizService {
 
   private _alreadyAsked: String[] = []; // idea: instead of tuple: YYYYRR (year+racenumber)
   private _falseAnswerCount: number;

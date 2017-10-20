@@ -1,22 +1,41 @@
-import { WinnerQuizService } from './winner-quiz.service';
+import { QuizService } from './quiz.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { Router } from '@angular/router';
+
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 import { HttpModule } from '@angular/http';
+
+import { WelcomeComponent } from './welcome.component';
+import { WinnerQuizComponent } from './winnerQuiz.component';
+import { PolePositionQuizComponent } from './polePositionQuiz.component';
+import { WorldChampionQuizComponent } from './worldChampionQuiz.component';
+import { StatisticsComponent } from './statistics.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    WelcomeComponent,
+    WinnerQuizComponent,
+    PolePositionQuizComponent,
+    WorldChampionQuizComponent,
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule,
     HttpModule,
+    AppRoutingModule,
   ],
-  providers: [
-    {provide: 'quizService', useClass: WinnerQuizService},
+  providers: [ // Dependency Injection!
+    {provide: 'quizService', useClass: QuizService},
     {provide: 'numberOfQuestions', useValue: 10},
- ], // Dependency Injection!
+ ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(router: Router) {
+    console.log('Routes: ', JSON.stringify(router.config, undefined, 2));
+  }
+}
