@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Question } from '../models/question';
 import { Component, Inject, OnInit } from '@angular/core';
 
@@ -10,24 +11,28 @@ import { Component, Inject, OnInit } from '@angular/core';
 export class WinnerQuizComponent implements OnInit {
   title = 'Welcome to the F1-Quiz!';
   currentQuestion: Promise<Question>;
-  answered: Boolean = false;
+  answered = false;
 
   // advantage via @Inject: we do not have to import the class WinnerQuizService here => no Dependency
   constructor(
-    @Inject('quizService') private winnerQuizService,
-    @Inject('numberOfQuestions') private numberOfQuestions: number) {
+    @Inject('quizService') private quizService,
+    @Inject('numberOfQuestions') private numberOfQuestions: number,
+    private router: Router) {
+      console.log("CONSTRUCTOR");
   }
 
   ngOnInit() {
-    this.winnerQuizService.yearRange = [2000, 2017];
+    this.quizService.yearRange = [2000, 2017];
     this.getNextQuestion();
+    console.log("NGONINIT"); // TODO: REMOVE ME; CONSTR + NGONINIT werden beide gecallt bei jedem laden der route winnerQuizComponent
   }
 
   getNextQuestion() {
     // we do not need await here => await waits for the promise to be resolved, but we do not care, because our
     // template handles the promise for us (currentQuestions | async)
     // so actually, with await this would not work!
-    this.currentQuestion = this.winnerQuizService.getNewQuestion();
+    this.currentQuestion = this.quizService.getNewQuestion();
+    console.log(this.quizService.correctAnswerCount);
     this.answered = false;
   }
 
@@ -37,9 +42,10 @@ export class WinnerQuizComponent implements OnInit {
     }
     this.answered = true;
 
-    this.winnerQuizService.answerQuestion(index);
-    if (this.numberOfQuestions === this.winnerQuizService.answeredQuestions.length) {
+    this.quizService.answerQuestion(index);
+    if (this.numberOfQuestions === this.quizService.answeredQuestions.length) {
       console.log('finished asking questions!');
+      this.router.navigate(['/quizResults']);
       return;
       // TODO: router => display results & which questions were wrong or right
     }

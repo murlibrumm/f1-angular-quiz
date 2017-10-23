@@ -1,4 +1,3 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div class="text-center">
   <h1>
     {{title}}
@@ -8,7 +7,7 @@
   </h2> 
   <div class="answerBox" *ngIf="(currentQuestion | async)">
     <button type="button" class="btn btn-primary" 
-    *ngFor="let answer of (currentQuestion | async)?.answers" [attr.data-index]="i" (click)="answerQuestion(i)" >
+    *ngFor="let answer of (currentQuestion | async)?.answers, let i = index" (click)="answerQuestion(i)" >
       {{answer}}
     </button>
   </div>

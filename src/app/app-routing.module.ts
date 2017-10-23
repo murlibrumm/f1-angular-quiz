@@ -6,6 +6,7 @@ import { WinnerQuizComponent } from './winnerQuiz.component';
 import { PolePositionQuizComponent } from './polePositionQuiz.component';
 import { WorldChampionQuizComponent } from './worldChampionQuiz.component';
 import { StatisticsComponent } from './statistics.component';
+import { QuizResultsComponent } from './quizResults.component';
 
 
 const appRoutes: Routes = [
@@ -29,6 +30,10 @@ const appRoutes: Routes = [
   {
     path: 'statistics',
     component: StatisticsComponent,
+  },
+  {
+    path: 'quizResults',
+    component: QuizResultsComponent,
   },
   //{ path: '**', component: PageNotFoundComponent }
 ];

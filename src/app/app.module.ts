@@ -13,6 +13,7 @@ import { WinnerQuizComponent } from './winnerQuiz.component';
 import { PolePositionQuizComponent } from './polePositionQuiz.component';
 import { WorldChampionQuizComponent } from './worldChampionQuiz.component';
 import { StatisticsComponent } from './statistics.component';
+import { QuizResultsComponent } from './quizResults.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { StatisticsComponent } from './statistics.component';
     PolePositionQuizComponent,
     WorldChampionQuizComponent,
     StatisticsComponent,
+    QuizResultsComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,7 @@ import { StatisticsComponent } from './statistics.component';
   ],
   providers: [ // Dependency Injection!
     {provide: 'quizService', useClass: QuizService},
-    {provide: 'numberOfQuestions', useValue: 10},
+    {provide: 'numberOfQuestions', useValue: 1},
  ],
   bootstrap: [AppComponent]
 })

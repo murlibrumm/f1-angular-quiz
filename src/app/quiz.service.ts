@@ -10,8 +10,8 @@ import 'rxjs/add/operator/map';
 export class QuizService {
 
   private _alreadyAsked: String[] = []; // idea: instead of tuple: YYYYRR (year+racenumber)
-  private _falseAnswerCount: number;
-  private _correctAnswerCount: number;
+  private _falseAnswerCount = 0;
+  private _correctAnswerCount = 0;
   private _answeredQuestions: Question[] = [];
   private _currentQuestion: Question;
   private _yearRange: number[] = [1950, new Date().getFullYear()]; // those are the default values
@@ -50,11 +50,14 @@ export class QuizService {
 
 
   answerQuestion(answerIndex: number) {
+    this._currentQuestion.userAnswerIndex = answerIndex;
     // was the question answered correctly?
     if (this._currentQuestion.correctAnswerIndex === answerIndex) {
+      console.log("correct answer");
       this._correctAnswerCount++;
       this._currentQuestion.correct = true;
     } else {
+      console.log("false answer");
       this._falseAnswerCount++;
       this._currentQuestion.correct = false;
     }
