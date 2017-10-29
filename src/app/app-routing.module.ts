@@ -2,40 +2,52 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { WelcomeComponent } from './welcome.component';
-import { WinnerQuizComponent } from './winnerQuiz.component';
-import { PolePositionQuizComponent } from './polePositionQuiz.component';
-import { WorldChampionQuizComponent } from './worldChampionQuiz.component';
+import { WinnerQuizComponent } from './quizComponents/winnerQuiz.component';
+import { PolePositionQuizComponent } from './quizComponents/polePositionQuiz.component';
+import { WorldChampionQuizComponent } from './quizComponents/worldChampionQuiz.component';
 import { StatisticsComponent } from './statistics.component';
-import { QuizResultsComponent } from './quizResults.component';
+import { WinnerQuizResultsComponent } from './resultComponents/winnerQuizResults.component';
+import { PolePositionQuizResultsComponent } from './resultComponents/polePositionQuizResults.component';
+import { WorldChampionQuizResultsComponent } from './resultComponents/worldChampionQuizResults.component';
 
+import { WQRoute, PPQRoute, WCQRoute, WQRRoute, PPQRRoute, WCQRRoute,
+  welcomeRoute, statisticsRoute } from './../utils/constants';
 
 const appRoutes: Routes = [
   {
-    path: '',
+    path: welcomeRoute,
     component: WelcomeComponent,
   },
   {
-    path: 'polePositionQuiz',
+    path: WQRoute,
+    component: WinnerQuizComponent,
+  },
+  {
+    path: PPQRoute,
     component: PolePositionQuizComponent,
   },
   {
-    path: 'worldChampionQuiz',
+    path: WCQRoute,
     component: WorldChampionQuizComponent,
     data: { preload: true }
   },
   {
-    path: 'winnerQuiz',
-    component: WinnerQuizComponent,
-  },
-  {
-    path: 'statistics',
+    path: statisticsRoute,
     component: StatisticsComponent,
   },
   {
-    path: 'quizResults',
-    component: QuizResultsComponent,
+    path: WQRRoute,
+    component: WinnerQuizResultsComponent,
   },
-  //{ path: '**', component: PageNotFoundComponent }
+  {
+    path: PPQRRoute,
+    component: PolePositionQuizResultsComponent,
+  },
+  {
+    path: WCQRRoute,
+    component: WorldChampionQuizResultsComponent,
+  },
+  // { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

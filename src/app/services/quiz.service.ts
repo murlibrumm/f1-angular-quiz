@@ -1,13 +1,14 @@
+import { WheelOfFortuneService } from './wheelOfFortune.service';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { randomIntFromInterval, shuffle } from '../utils/utils';
-import { ergastURL, raceResultsURL } from '../utils/constants';
-import { Question } from '../models/question';
+import { randomIntFromInterval, shuffle } from '../../utils/utils';
+import { ergastURL, raceResultsURL } from '../../utils/constants';
+import { Question } from '../../models/question';
 import 'rxjs/add/operator/map';
 
 
 @Injectable()
-export class QuizService {
+export abstract class QuizService {
 
   private _alreadyAsked: String[] = []; // idea: instead of tuple: YYYYRR (year+racenumber)
   private _falseAnswerCount = 0;
@@ -16,7 +17,7 @@ export class QuizService {
   private _currentQuestion: Question;
   private _yearRange: number[] = [1950, new Date().getFullYear()]; // those are the default values
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private questionText: String) { }
 
   get currentQuestion() {
     return this._currentQuestion;
@@ -87,7 +88,7 @@ export class QuizService {
     // 1. get random season between the two years (standard: 1950 and current year)
     const year = randomIntFromInterval(this._yearRange[0], this._yearRange[1]);
     // 2. send the request
-    const raceResults = await this.getRaceResults(year, 1);
+    const raceResults = await this.getApiResults(year, 1);
 
     // 3. get random race in the season, and make sure that we did not ask this race already!
     const numberOfRaces = raceResults.total;
@@ -110,9 +111,8 @@ export class QuizService {
     // 5. create list of points for all drivers who finished p1-p4 in this year
     const listOfPoints = await this.createListOfPoints(raceResults, year, raceNumber);
     // 6. create wheel of fortune (weighted, so win= 8p, 2nd = 4p, 3rd = 2p, 4th = 1p)
-    const wheelOfFortune = this.createWheelOfFortune(listOfPoints);
-
-    const selectedDrivers = this.selectFromWheelOfFortune(3, wheelOfFortune);
+    const wheelOfFortune = new WheelOfFortuneService(listOfPoints);
+    const selectedDrivers = wheelOfFortune.selectFromWheelOfFortune(3);
     const correctAnswer = this.getDriverName(raceResults.RaceTable.Races[raceNumber]);
     selectedDrivers.push(correctAnswer);
 
@@ -122,7 +122,7 @@ export class QuizService {
     // create question
     const raceName = raceResults.RaceTable.Races[raceNumber].raceName;
     this._currentQuestion = new Question(
-      `Which driver won the ${year} ${raceName}?`,
+      `${this.questionText} ${year} ${raceName}?`,
       selectedDrivers,
       selectedDrivers.indexOf(correctAnswer)
     );
@@ -139,28 +139,6 @@ export class QuizService {
     return `${year}${raceNumber}`;
   }
 
-  private selectFromWheelOfFortune(quantity: number, wheelOfFortune: any[]): String[] {
-    const selectedDrivers: String[] = [];
-
-    let selectedCount = 0;
-    while (selectedCount < quantity) {
-      const random = Math.random();
-      for (let i = 0; i < wheelOfFortune.length; i++) {
-        if (random >= wheelOfFortune[i].lowerBound && random < wheelOfFortune[i].upperBound) {
-          const driverName = wheelOfFortune[i].driverName;
-          if (selectedDrivers.includes(driverName)) { // do not select the same driver twice!
-            break;
-          }
-          selectedDrivers.push(driverName);
-          selectedCount++;
-          break;
-        }
-      }
-    }
-
-    return selectedDrivers;
-  }
-
   // async function is needed in combination with await!
   // await simply pauses the execution of the method until the value from the promise is available
   private async createListOfPoints(raceResults1: any, year: number, raceNumber: number): Promise<any> {
@@ -168,7 +146,7 @@ export class QuizService {
     // other podium finishers of that year for our answer possibilities.
     // so getData
     let [raceResults2, raceResults3, raceResults4] = // await all promises!
-      await Promise.all([this.getRaceResults(year, 2), this.getRaceResults(year, 3), this.getRaceResults(year, 4)]);
+      await Promise.all([this.getApiResults(year, 2), this.getApiResults(year, 3), this.getApiResults(year, 4)]);
     const winnerName = this.getDriverName(raceResults1.RaceTable.Races[raceNumber]);
 
     raceResults1 = this.mapResultsToPoints(raceResults1.RaceTable.Races, 8);
@@ -198,41 +176,13 @@ export class QuizService {
   }
 
   // helper for getting the drivername out of a result of a race.
-  private getDriverName(raceResults: any): String {
-    const driver = raceResults.Results[0].Driver;
-    return `${driver.givenName} ${driver.familyName}`;
-  }
+  protected abstract getDriverName(raceResults: any): String;
 
-  // returns a wheelOfFortune. Its an analogy from gambling. Each driver gets a share of a range from 0-1.
-  // The better positions the driver has, the bigger his share on the wheel gets. Then we select a number from
-  // 0-1 aka "spinning the wheel", and select a random driver.
-  private createWheelOfFortune (listOfPoints: {String: number}[]): Object[] {
-    // now the listOfPoints looks like this: {"Sebastian Vettel": 2, "Lewis Hamilton": 8, ...}
-    // 1. we need to sum all the values of our List
-    const sumPoints: number = Object.keys(listOfPoints).reduce(function (previous, driverName) {
-      return previous + listOfPoints[driverName];
-    }, 0);
+  protected abstract getApiResults(year: number, finishingPosition: number): any;
 
-    // 2. create a ranged array like: [{lowerBound: 0, upperBound: 0.123: driverName: 'Sebastian Vettel'},
-    //  {lowerBound: 0.123, upperBound: 0.333, driverName: 'Lewis Hamilton'}, {lowerBound: 0.33 ...}, ...]
-    const wheelOfFortune: Object[] = [];
-    let lowerBound = 0;
-    let counter = 0;
-    for (const driverName of Object.keys(listOfPoints)) {
-      let upperBound = lowerBound + listOfPoints[driverName] / sumPoints;
-      if (counter === Object.keys(listOfPoints).length - 1) {
-        upperBound = 1;
-      }
-      wheelOfFortune.push({lowerBound, upperBound, driverName});
-      lowerBound = upperBound;
-      counter++;
-    }
-    return wheelOfFortune;
-  }
-
-  private getRaceResults(year: number, finishingPosition: number): any {
+  protected sendApiRequest(URL: string): any {
     return new Promise((resolve, reject) => {
-      this.http.get(ergastURL + year + raceResultsURL + finishingPosition + '.json')
+      this.http.get(URL)
       .map((res) => res.json())
       .subscribe((data) => {
         resolve(data.MRData);

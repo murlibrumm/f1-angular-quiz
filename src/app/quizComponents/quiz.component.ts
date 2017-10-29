@@ -1,23 +1,18 @@
 import { Router } from '@angular/router';
-import { Question } from '../models/question';
+import { Question } from '../../models/question';
 import { Component, Inject, OnInit } from '@angular/core';
 
-@Component({
-  selector: 'app-winner-quiz',
-  templateUrl: './winnerQuiz.component.html',
-  styleUrls: ['./winnerQuiz.component.css']
-})
-
-export class WinnerQuizComponent implements OnInit {
+export abstract class QuizComponent implements OnInit {
   title = 'Welcome to the F1-Quiz!';
   currentQuestion: Promise<Question>;
   answered = false;
 
-  // advantage via @Inject: we do not have to import the class WinnerQuizService here => no Dependency
+  // advantage via @Inject: we do not have to import the class QuizService here => no Dependency
   constructor(
-    @Inject('quizService') private quizService,
-    @Inject('numberOfQuestions') private numberOfQuestions: number,
-    private router: Router) { }
+    private quizService,
+    private numberOfQuestions: number,
+    private router: Router,
+    private resultURL: String) { }
 
   ngOnInit() {
     this.quizService.reset();
@@ -43,7 +38,7 @@ export class WinnerQuizComponent implements OnInit {
     this.quizService.answerQuestion(index);
     if (this.numberOfQuestions === this.quizService.answeredQuestions.length) {
       console.log('finished asking questions!');
-      this.router.navigate(['/quizResults']);
+      this.router.navigate([this.resultURL]);
       return;
       // TODO: router => display results & which questions were wrong or right
     }

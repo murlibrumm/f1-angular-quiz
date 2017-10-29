@@ -1,0 +1,20 @@
+.resultsBox {
+  width: 500px;
+  margin: 0px auto;
+}
+
+.progress {
+  position: relative;
+}
+
+.progress-bar>span {
+  position: absolute;
+  left: 0px;
+  width: 100%;
+  font-size: 125%;
+}
+
+.label {
+  font-size: 90%;
+  line-height: 2;
+}

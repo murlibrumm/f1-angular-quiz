@@ -1,4 +1,5 @@
-import { QuizService } from './quiz.service';
+import { WinnerQuizService } from './services/winnerQuiz.service';
+import { PolePositionQuizService } from './services/polePositionQuiz.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -9,11 +10,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpModule } from '@angular/http';
 
 import { WelcomeComponent } from './welcome.component';
-import { WinnerQuizComponent } from './winnerQuiz.component';
-import { PolePositionQuizComponent } from './polePositionQuiz.component';
-import { WorldChampionQuizComponent } from './worldChampionQuiz.component';
+import { WinnerQuizComponent } from './quizComponents/winnerQuiz.component';
+import { PolePositionQuizComponent } from './quizComponents/polePositionQuiz.component';
+import { WorldChampionQuizComponent } from './quizComponents/worldChampionQuiz.component';
 import { StatisticsComponent } from './statistics.component';
-import { QuizResultsComponent } from './quizResults.component';
+import { WinnerQuizResultsComponent } from './resultComponents/winnerQuizResults.component';
+import { PolePositionQuizResultsComponent } from './resultComponents/polePositionQuizResults.component';
+import { WorldChampionQuizResultsComponent } from './resultComponents/worldChampionQuizResults.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,9 @@ import { QuizResultsComponent } from './quizResults.component';
     PolePositionQuizComponent,
     WorldChampionQuizComponent,
     StatisticsComponent,
-    QuizResultsComponent,
+    WinnerQuizResultsComponent,
+    PolePositionQuizResultsComponent,
+    WorldChampionQuizResultsComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,11 +36,13 @@ import { QuizResultsComponent } from './quizResults.component';
     AppRoutingModule,
   ],
   providers: [ // Dependency Injection!
-    {provide: 'quizService', useClass: QuizService},
+    {provide: 'winnerQuizService', useClass: WinnerQuizService},
+    {provide: 'polePositionQuizService', useClass: PolePositionQuizService},
     {provide: 'numberOfQuestions', useValue: 2},
  ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
   constructor(router: Router) {
     console.log('Routes: ', JSON.stringify(router.config, undefined, 2));

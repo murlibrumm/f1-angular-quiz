@@ -2,11 +2,11 @@
   <div class="progress">
     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" 
     [style.width]="quizService.getCorrectPercentage()+'%'">
-      {{quizService.getCorrectPercentage()}}%
+      <span [ngStyle]="{'color': quizService.getCorrectPercentage() > 50 ? 'white' : 'black'}">{{quizService.getCorrectPercentage()}}%</span>
     </div>
   </div>
 
-  <a class="nav-link" routerLink="/winnerQuiz" routerLinkActive="active">
+  <a class="nav-link" routerLink="{{'/' + playAgainURL}}" routerLinkActive="active">
     <button>Play Again!</button>
   </a>
 
