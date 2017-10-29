@@ -32,7 +32,7 @@ import { QuizResultsComponent } from './quizResults.component';
   ],
   providers: [ // Dependency Injection!
     {provide: 'quizService', useClass: QuizService},
-    {provide: 'numberOfQuestions', useValue: 1},
+    {provide: 'numberOfQuestions', useValue: 2},
  ],
   bootstrap: [AppComponent]
 })

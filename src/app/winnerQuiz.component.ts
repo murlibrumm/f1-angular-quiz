@@ -17,14 +17,12 @@ export class WinnerQuizComponent implements OnInit {
   constructor(
     @Inject('quizService') private quizService,
     @Inject('numberOfQuestions') private numberOfQuestions: number,
-    private router: Router) {
-      console.log("CONSTRUCTOR");
-  }
+    private router: Router) { }
 
   ngOnInit() {
+    this.quizService.reset();
     this.quizService.yearRange = [2000, 2017];
     this.getNextQuestion();
-    console.log("NGONINIT"); // TODO: REMOVE ME; CONSTR + NGONINIT werden beide gecallt bei jedem laden der route winnerQuizComponent
   }
 
   getNextQuestion() {

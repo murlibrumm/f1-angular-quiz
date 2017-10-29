@@ -1,11 +1,10 @@
 export class Question {
-  private _correct = false;
   private _userAnswerIndex = -1;
 
   constructor(private _question: String, private _answers: String[], private _correctAnswerIndex: number) {}
 
   toString() {
-    return `${this._question} ${this._answers} ${this._correctAnswerIndex} ${this._correct}`;
+    return `${this._question} ${this._answers} ${this._correctAnswerIndex} ${this.isCorrect()}`;
   }
 
   get question () {
@@ -30,11 +29,7 @@ export class Question {
       }
   }
 
-  get correct () {
-      return this._correct;
-  }
-
-  set correct (value: boolean) {
-      this._correct = value;
+  isCorrect () {
+      return this._userAnswerIndex === this._correctAnswerIndex;
   }
 }

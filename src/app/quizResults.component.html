@@ -1,0 +1,25 @@
+<div class="resultsBox">
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" 
+    [style.width]="quizService.getCorrectPercentage()+'%'">
+      {{quizService.getCorrectPercentage()}}%
+    </div>
+  </div>
+
+  <a class="nav-link" routerLink="/winnerQuiz" routerLinkActive="active">
+    <button>Play Again!</button>
+  </a>
+
+  <div *ngFor="let question of quizService.answeredQuestions" class="questionResult">
+    <h4>{{question.question}}</h4>
+    <span class="label" [ngClass]="{'label-success': question.isCorrect(), 
+    'label-danger': !question.isCorrect()}">
+      Your Answer: {{question.answers[question.userAnswerIndex]}}
+    </span>
+    <div *ngIf="!question.isCorrect()">
+      <span class="label label-success">
+        Correct Answer: {{question.answers[question.correctAnswerIndex]}}
+      </span>
+    </div>
+  </div>
+</div>

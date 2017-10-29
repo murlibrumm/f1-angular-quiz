@@ -1,5 +1,6 @@
 import { Router } from '@angular/router';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { Question } from '../models/question';
 
 @Component({
   selector: 'app-pole-position-quiz',
@@ -8,12 +9,14 @@ import { Component, Inject } from '@angular/core';
   `
 })
 
-export class PolePositionQuizComponent {
+export class PolePositionQuizComponent implements OnInit {
   constructor(
-    @Inject('quizService') private winnerQuizService,
+    @Inject('quizService') private quizService,
     @Inject('numberOfQuestions') private numberOfQuestions: number,
-    private router: Router) {
-      console.log(winnerQuizService.correctAnswerCount);
-      console.log(winnerQuizService.currentQuestion);
+    private router: Router) { }
+
+  ngOnInit() {
+    this.quizService.reset();
+    this.quizService.yearRange = [2000, 2017];
   }
 }

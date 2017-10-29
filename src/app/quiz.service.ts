@@ -49,17 +49,30 @@ export class QuizService {
   }
 
 
+  reset() {
+    this._alreadyAsked       = [];
+    this._falseAnswerCount   = 0;
+    this._correctAnswerCount = 0;
+    this._answeredQuestions  = [];
+    this._currentQuestion    = null;
+  }
+
+  getCorrectPercentage() {
+    if (this._correctAnswerCount + this._falseAnswerCount === 0) {
+      return 0;
+    }
+    return (this._correctAnswerCount / (this._correctAnswerCount + this._falseAnswerCount)) * 100;
+  }
+
   answerQuestion(answerIndex: number) {
     this._currentQuestion.userAnswerIndex = answerIndex;
     // was the question answered correctly?
     if (this._currentQuestion.correctAnswerIndex === answerIndex) {
-      console.log("correct answer");
+      console.log('correct answer');
       this._correctAnswerCount++;
-      this._currentQuestion.correct = true;
     } else {
-      console.log("false answer");
+      console.log('false answer');
       this._falseAnswerCount++;
-      this._currentQuestion.correct = false;
     }
 
     console.log('question answered');
