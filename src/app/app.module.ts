@@ -1,5 +1,6 @@
 import { WinnerQuizService } from './services/winnerQuiz.service';
 import { PolePositionQuizService } from './services/polePositionQuiz.service';
+import { WorldChampionQuizService } from './services/worldChampionQuiz.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -38,6 +39,7 @@ import { WorldChampionQuizResultsComponent } from './resultComponents/worldChamp
   providers: [ // Dependency Injection!
     {provide: 'winnerQuizService', useClass: WinnerQuizService},
     {provide: 'polePositionQuizService', useClass: PolePositionQuizService},
+    {provide: 'worldChampionQuizService', useClass: WorldChampionQuizService},
     {provide: 'numberOfQuestions', useValue: 2},
  ],
   bootstrap: [AppComponent]

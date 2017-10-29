@@ -21,6 +21,11 @@ const WCQRRoute = 'worldChampionQuizResults';
 const welcomeRoute = '';
 const statisticsRoute = 'statistics';
 
+const winQuestion = 'Which driver won the';
+const ppQuestion  = 'Which driver took pole position for the';
+const wdcQuestion = 'Which driver won the driver\'s world championship in';
+
 export { ergastURL, raceResultsURL, polePositionURL, worldChampionURL,
 WQRoute, PPQRoute, WCQRoute, WQRRoute, PPQRRoute, WCQRRoute,
-welcomeRoute, statisticsRoute };
+welcomeRoute, statisticsRoute,
+winQuestion, ppQuestion, wdcQuestion };

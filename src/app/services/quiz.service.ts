@@ -10,12 +10,12 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export abstract class QuizService {
 
-  private _alreadyAsked: String[] = []; // idea: instead of tuple: YYYYRR (year+racenumber)
-  private _falseAnswerCount = 0;
-  private _correctAnswerCount = 0;
-  private _answeredQuestions: Question[] = [];
-  private _currentQuestion: Question;
-  private _yearRange: number[] = [1950, new Date().getFullYear()]; // those are the default values
+  protected _alreadyAsked: String[] = []; // idea: instead of tuple: YYYYRR (year+racenumber)
+  protected _falseAnswerCount = 0;
+  protected _correctAnswerCount = 0;
+  protected _answeredQuestions: Question[] = [];
+  protected _currentQuestion: Question;
+  protected _yearRange: number[] = [1950, new Date().getFullYear()]; // those are the default values
 
   constructor(private http: Http, private questionText: String) { }
 

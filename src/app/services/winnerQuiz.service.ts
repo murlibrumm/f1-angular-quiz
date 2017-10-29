@@ -2,13 +2,14 @@ import { QuizService } from './quiz.service';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { ergastURL, raceResultsURL } from '../../utils/constants';
+import { winQuestion } from '../../utils/constants';
 import 'rxjs/add/operator/map';
 
 
 @Injectable()
 export class WinnerQuizService extends QuizService {
 
-  constructor(http: Http) { super(http, 'Which driver won the'); }
+  constructor(http: Http) { super(http, winQuestion); }
 
   protected getApiResults(year: number, finishingPosition: number): any {
     return this.sendApiRequest(ergastURL + year + raceResultsURL + finishingPosition + '.json');
