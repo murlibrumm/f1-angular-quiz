@@ -11,7 +11,7 @@ import { WCQRRoute } from './../../utils/constants';
 
 export class WorldChampionQuizComponent extends QuizComponent {
   constructor(
-    @Inject('worldChampionQuizService') quizService, // TODO: implement WCQuizService
+    @Inject('worldChampionQuizService') quizService,
     @Inject('numberOfQuestions') numberOfQuestions: number,
     router: Router) { super(quizService, numberOfQuestions, router, WCQRRoute); }
 }
