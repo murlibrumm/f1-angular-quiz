@@ -7,11 +7,13 @@ The website consists of three different quizzes - race winner quiz, pole positio
 
 Below are two screenshots:
 
-Quiz page:  
+Quiz page:
+
 ![World champion quiz page](/readmeImg/wdcQuiz.jpg?raw=true "World champion quiz page")
 
 <br />
-Results page:  
+Results page:
+
 ![World champion quiz results page](/readmeImg/wdcQuizResults.jpg?raw=true "World champion quiz results page")
 
 ## Development server
