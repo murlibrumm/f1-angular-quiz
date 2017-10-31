@@ -1,14 +1,17 @@
-# f1-angular-quiz
-I did this little project to learn more about Angular!
+# F1 Angular Quiz
+I did this little project to learn more about Angular & Typescript!
 
-It uses Angular, Angular CLI, Bootstrap, and the [Ergast Developer API](http://ergast.com/mrd/), which is a great API for getting F1 results and statistics.
+It uses [Angular](https://angular.io/), [Angular CLI](https://github.com/angular/angular-cli), [Bootstrap](http://getbootstrap.com/), and the [Ergast Developer API](http://ergast.com/mrd/), which is a great API for getting F1 results and statistics.
 
 The website consists of three different quizzes - race winner quiz, pole position quiz, and world champion quiz.
 
-Below are two screenshots of a quiz and a results page.
+Below are two screenshots:
 
+Quiz page:  
 ![World champion quiz page](/readmeImg/wdcQuiz.jpg?raw=true "World champion quiz page")
 
+<br />
+Results page:  
 ![World champion quiz results page](/readmeImg/wdcQuizResults.jpg?raw=true "World champion quiz results page")
 
 ## Development server
