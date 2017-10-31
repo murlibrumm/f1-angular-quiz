@@ -110,28 +110,38 @@ export abstract class QuizService {
 
     // 5. create list of points for all drivers who finished p1-p4 in this year
     const listOfPoints = await this.createListOfPoints(raceResults, year, raceNumber);
+
     // 6. create wheel of fortune (weighted, so win= 8p, 2nd = 4p, 3rd = 2p, 4th = 1p)
+    const correctAnswer = this.getDriverName(raceResults.RaceTable.Races[raceNumber]);
+    const selectedDrivers = this.selectDriversFromWheelOfFortune(listOfPoints, correctAnswer);
+
+    // 7. create the question
+    const raceName = raceResults.RaceTable.Races[raceNumber].raceName;
+    return this.createQuestion(selectedDrivers, correctAnswer, `${this.questionText} ${year} ${raceName}?`);
+  }
+
+  protected selectDriversFromWheelOfFortune (listOfPoints: any[], correctAnswer: String): String[] {
     const wheelOfFortune = new WheelOfFortuneService(listOfPoints);
     const selectedDrivers = wheelOfFortune.selectFromWheelOfFortune(3);
-    const correctAnswer = this.getDriverName(raceResults.RaceTable.Races[raceNumber]);
     selectedDrivers.push(correctAnswer);
+    return selectedDrivers;
+  }
 
+  protected createQuestion (driverArray: String[], correctAnswer: String, questionText: String): Promise<Question> {
     // shuffle answers & save new index of the correct answer
-    shuffle(selectedDrivers);
+    shuffle(driverArray);
 
     // create question
-    const raceName = raceResults.RaceTable.Races[raceNumber].raceName;
     this._currentQuestion = new Question(
-      `${this.questionText} ${year} ${raceName}?`,
-      selectedDrivers,
-      selectedDrivers.indexOf(correctAnswer)
+      questionText,
+      driverArray,
+      driverArray.indexOf(correctAnswer)
     );
 
     console.log(this._currentQuestion);
     return new Promise<Question>((resolve, reject) => {
       resolve(this._currentQuestion);
     });
-
   }
 
 
@@ -154,17 +164,19 @@ export abstract class QuizService {
     raceResults3 = this.mapResultsToPoints(raceResults3.RaceTable.Races, 2);
     raceResults4 = this.mapResultsToPoints(raceResults4.RaceTable.Races, 1);
 
-    let completeList = raceResults1.concat(raceResults2).concat(raceResults3).concat(raceResults4);
+    const driversPointsList = raceResults1.concat(raceResults2).concat(raceResults3).concat(raceResults4);
+    return this.reduceDriversPointsList(driversPointsList, winnerName);
+  }
 
-    // filter out all the columns with the actual race winner.
-    completeList = completeList.filter((elem) => elem[0] !== winnerName);
+  protected reduceDriversPointsList (driversPointsList: (string|number)[][], correctAnswer: String): Promise<any> {
+    // filter out all the columns with the correctAnswer
+    driversPointsList = driversPointsList.filter((elem) => elem[0] !== correctAnswer);
 
-    const reducedList = completeList.reduce( (tally, result) => {
+    const reducedList = driversPointsList.reduce( (tally, result) => {
       tally[result[0]] = (tally[result[0]] || 0) + result[1] ; // if there is no index of the driver, add a new index with 0 points
       return tally;
     } , {});
 
-    // filter out all the columns with the actual race winner.
     return new Promise((resolve, reject) => {
       resolve(reducedList);
     });

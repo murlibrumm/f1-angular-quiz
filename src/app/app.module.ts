@@ -19,6 +19,8 @@ import { WinnerQuizResultsComponent } from './resultComponents/winnerQuizResults
 import { PolePositionQuizResultsComponent } from './resultComponents/polePositionQuizResults.component';
 import { WorldChampionQuizResultsComponent } from './resultComponents/worldChampionQuizResults.component';
 
+import { numberOfQuestions, quizYearRange } from '../utils/constants';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +42,8 @@ import { WorldChampionQuizResultsComponent } from './resultComponents/worldChamp
     {provide: 'winnerQuizService', useClass: WinnerQuizService},
     {provide: 'polePositionQuizService', useClass: PolePositionQuizService},
     {provide: 'worldChampionQuizService', useClass: WorldChampionQuizService},
-    {provide: 'numberOfQuestions', useValue: 2},
+    {provide: 'numberOfQuestions', useValue: numberOfQuestions},
+    {provide: 'quizYearRange', useValue: quizYearRange}
  ],
   bootstrap: [AppComponent]
 })

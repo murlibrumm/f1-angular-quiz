@@ -44,32 +44,16 @@ export class WorldChampionQuizService extends QuizService {
 
     // 3. get wdcResults of our selected year
     const wdcResults = await this.getApiResults(year);
-    console.log(wdcResults.StandingsTable.StandingsLists[0].DriverStandings[0]);
     const wdcWinnerName = this.getDriverName(wdcResults.StandingsTable.StandingsLists[0].DriverStandings[0]);
 
     // 4. create list of points for all drivers who finished p1-p4 in the wdc in the surrounding years (weighted)
     const listOfPoints = await this.createListOfWdcPoints(wdcResults, wdcWinnerName, year);
 
     // 5. create wheel of fortune
-    const wheelOfFortune = new WheelOfFortuneService(listOfPoints);
-    const selectedDrivers = wheelOfFortune.selectFromWheelOfFortune(3);
-    selectedDrivers.push(wdcWinnerName);
+    const selectedDrivers = this.selectDriversFromWheelOfFortune(listOfPoints, wdcWinnerName);
 
-    // shuffle answers & save new index of the correct answer
-    shuffle(selectedDrivers);
-
-    // create question
-    this._currentQuestion = new Question(
-      `${wdcQuestion} ${year}?`,
-      selectedDrivers,
-      selectedDrivers.indexOf(wdcWinnerName)
-    );
-
-    console.log(this._currentQuestion);
-    return new Promise<Question>((resolve, reject) => {
-      resolve(this._currentQuestion);
-    });
-
+    // 6. create Question
+    return this.createQuestion(selectedDrivers, wdcWinnerName, `${wdcQuestion} ${year}?`);
   }
 
   // async function is needed in combination with await!
@@ -97,22 +81,8 @@ export class WorldChampionQuizService extends QuizService {
       wdcArray.push(this.mapResultsToWdcPoints(wdcResultsP2.StandingsTable.StandingsLists[0].DriverStandings));
     }
 
-    console.log(wdcArray);
-    let driversPointsArray = this.getDistinctDrivers(wdcArray, 4);
-    console.log(driversPointsArray);
-
-    // filter out all the columns with the actual WDC winner
-    driversPointsArray = driversPointsArray.filter((elem) => elem[0] !== wdcWinnerName);
-    console.log(driversPointsArray);
-
-    const reducedList = driversPointsArray.reduce( (tally, result) => {
-      tally[result[0]] = (tally[result[0]] || 0) + result[1] ; // if there is no index of the driver, add a new index with 0 points
-      return tally;
-    } , {});
-
-    return new Promise((resolve, reject) => {
-      resolve(reducedList);
-    });
+    const driversPointsList = this.getDistinctDrivers(wdcArray, 4);
+    return this.reduceDriversPointsList(driversPointsList, wdcWinnerName);
   }
 
   private getDistinctDrivers(wdcArray: any[], numberOfDrivers: number): any[] {

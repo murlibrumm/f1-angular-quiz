@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { Question } from '../../models/question';
 import { Component, Inject, OnInit } from '@angular/core';
+import { quizYearRange } from '../../utils/constants';
 
 export abstract class QuizComponent implements OnInit {
   title = 'Welcome to the F1-Quiz!';
@@ -16,7 +17,7 @@ export abstract class QuizComponent implements OnInit {
 
   ngOnInit() {
     this.quizService.reset();
-    this.quizService.yearRange = [2000, 2017];
+    this.quizService.yearRange = quizYearRange;
     this.getNextQuestion();
   }
 
