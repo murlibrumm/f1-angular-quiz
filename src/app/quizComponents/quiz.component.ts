@@ -41,7 +41,6 @@ export abstract class QuizComponent implements OnInit {
       console.log('finished asking questions!');
       this.router.navigate([this.resultURL]);
       return;
-      // TODO: router => display results & which questions were wrong or right
     }
     this.getNextQuestion(); // otherwise get the next question
 
