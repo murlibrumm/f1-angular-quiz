@@ -1,7 +1,8 @@
 import { QuizComponent } from './quiz.component';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Component, Inject, OnInit } from '@angular/core';
-import { WCQRRoute } from './../../utils/constants';
+import {PPQRRoute, WCQRRoute} from './../../utils/constants';
+import {QuizService} from "../services/quiz.service";
 
 @Component({
   selector: 'app-world-champion-quiz',
@@ -10,8 +11,7 @@ import { WCQRRoute } from './../../utils/constants';
 })
 
 export class WorldChampionQuizComponent extends QuizComponent {
-  constructor(
-    @Inject('worldChampionQuizService') quizService,
-    @Inject('numberOfQuestions') numberOfQuestions: number,
-    router: Router) { super(quizService, numberOfQuestions, router, WCQRRoute); }
+  public constructor(
+    @Inject('worldChampionQuizService') quizService: QuizService,
+    router: Router, activatedRoute: ActivatedRoute) { super(quizService, activatedRoute, router, WCQRRoute); }
 }

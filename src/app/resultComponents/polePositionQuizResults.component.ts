@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Component, Inject } from '@angular/core';
 import { QuizResultsComponent } from './quizResults.component';
 import { PPQRoute } from './../../utils/constants';
@@ -13,7 +13,8 @@ export class PolePositionQuizResultsComponent extends QuizResultsComponent {
   constructor(
     @Inject('polePositionQuizService') quizService,
     @Inject('numberOfQuestions') numberOfQuestions: number,
-    router: Router) { super(quizService, numberOfQuestions, router, PPQRoute);
+    router: Router,
+    activatedRoute: ActivatedRoute) { super(quizService, numberOfQuestions, activatedRoute, router, PPQRoute);
       console.log(quizService.correctAnswerCount);
       console.log(quizService.currentQuestion);
   }

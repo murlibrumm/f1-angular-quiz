@@ -1,7 +1,8 @@
 import { QuizComponent } from './quiz.component';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Component, Inject, OnInit } from '@angular/core';
 import { PPQRRoute } from './../../utils/constants';
+import {QuizService} from "../services/quiz.service";
 
 @Component({
   selector: 'app-pole-position-quiz',
@@ -10,8 +11,7 @@ import { PPQRRoute } from './../../utils/constants';
 })
 
 export class PolePositionQuizComponent extends QuizComponent {
-  constructor(
-    @Inject('polePositionQuizService') quizService,
-    @Inject('numberOfQuestions') numberOfQuestions: number,
-    router: Router) { super(quizService, numberOfQuestions, router, PPQRRoute); }
+  public constructor(
+    @Inject('polePositionQuizService') quizService: QuizService,
+    router: Router, activatedRoute: ActivatedRoute) { super(quizService, activatedRoute, router, PPQRRoute); }
 }

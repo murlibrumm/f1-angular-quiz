@@ -31,8 +31,8 @@ export class WheelOfFortuneService {
   }
 
   // select @quantity distinct entries from the wheelOfFortune
-  public selectFromWheelOfFortune(quantity: number): String[] {
-    const selectedDrivers: String[] = [];
+  public selectFromWheelOfFortune(quantity: number): string[] {
+    const selectedDrivers: string[] = [];
 
     let selectedCount = 0;
     while (selectedCount < quantity) {

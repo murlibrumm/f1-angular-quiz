@@ -4,7 +4,6 @@ import { Http } from '@angular/http';
 import { ergastURL, worldChampionURL, wdcQuestion } from '../../utils/constants';
 import { randomIntFromInterval, shuffle } from '../../utils/utils';
 import { Question } from '../../models/question';
-import { WheelOfFortuneService } from './wheelOfFortune.service';
 import 'rxjs/add/operator/map';
 
 
@@ -13,11 +12,30 @@ export class WorldChampionQuizService extends QuizService {
 
   constructor(http: Http) { super(http, wdcQuestion); }
 
+  get numberOfQuestions() {
+    return this._numberOfQuestions;
+  }
+
+  set numberOfQuestions(noq: number) {
+    let maxQuestions = (this._yearRange[1] + 1) - this._yearRange[0];
+    (noq > maxQuestions) ? this.setValidNumberOfQuestions(maxQuestions) : this.setValidNumberOfQuestions(noq);
+  }
+
+  get yearRange(): number[] {
+    return this._yearRange;
+  }
+
+  set yearRange(range) {
+    let currentDate = new Date();
+    let maxYear = (currentDate.getMonth() === 11 && currentDate.getDay() > 10) ? currentDate.getFullYear() : currentDate.getFullYear()-1;
+    this.setYearRangeMinMax(range, 1950, maxYear);
+  }
+
   protected getApiResults(year: number): any {
     return this.sendApiRequest(ergastURL + year + worldChampionURL + '.json?limit=4'); // Top 4 of the year
   }
 
-  protected getDriverName(wdcResults: any): String {
+  protected getDriverName(wdcResults: any): string {
     const driver = wdcResults.Driver;
     return `${driver.givenName} ${driver.familyName}`;
   }
@@ -58,7 +76,7 @@ export class WorldChampionQuizService extends QuizService {
 
   // async function is needed in combination with await!
   // await simply pauses the execution of the method until the value from the promise is available
-  private async createListOfWdcPoints(wdcResults: any, wdcWinnerName: String, year: number): Promise<any> {
+  private async createListOfWdcPoints(wdcResults: any, wdcWinnerName: string, year: number): Promise<any> {
     // get WDC- stats from our year, and the 2 years before and after
     const [wdcResultsM2, wdcResultsM1, wdcResultsP1, wdcResultsP2] = // await all promises!
       await Promise.all([this.getApiResults(year - 2), this.getApiResults(year - 1),
@@ -87,7 +105,7 @@ export class WorldChampionQuizService extends QuizService {
 
   private getDistinctDrivers(wdcArray: any[], numberOfDrivers: number): any[] {
     const driversPointsArray: any[] = [];
-    const distinctDrivers: String[] = [];
+    const distinctDrivers: string[] = [];
     // get the amount of places needed
     for (let wdcPosition = 0; wdcPosition < 4; wdcPosition++) {
       // add WDC[i] from all our years to our complete list

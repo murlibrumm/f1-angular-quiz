@@ -13,25 +13,19 @@ export class PolePositionQuizService extends QuizService {
 
   constructor(http: Http) { super(http, ppQuestion); }
 
+  get yearRange(): number[] {
+    return this._yearRange;
+  }
+
   set yearRange(range) {
-    // validate input first
-    if (range[0] > range[1]) {
-      return;
-    }
-    if (range[0] < 2003) {
-      range[0] = 2003;
-    }
-    if (range[1] > new Date().getFullYear()) {
-      range[1] = new Date().getFullYear();
-    }
-    this._yearRange = range;
+    this.setYearRangeMinMax(range, 2003, new Date().getFullYear());
   }
 
   protected getApiResults(year: number, finishingPosition: number): any {
     return this.sendApiRequest(ergastURL + year + polePositionURL + finishingPosition + '.json');
   }
 
-  protected getDriverName(raceResults: any): String {
+  protected getDriverName(raceResults: any): string {
     const driver = raceResults.QualifyingResults[0].Driver;
     return `${driver.givenName} ${driver.familyName}`;
   }

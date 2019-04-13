@@ -1,6 +1,6 @@
 export class QuizSettings {
 
-  constructor(public _period: String, public _numberOfQuestions: number) {}
+  constructor(public _period: string, public _numberOfQuestions: number) {}
 
 }
 

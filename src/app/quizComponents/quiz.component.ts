@@ -1,27 +1,32 @@
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Question } from '../../models/question';
 import { Component, Inject, OnInit } from '@angular/core';
-import { quizYearRange } from '../../utils/constants';
+import {QuizService} from "../services/quiz.service";
 
 export abstract class QuizComponent implements OnInit {
-  title = 'Welcome to the F1-Quiz!';
-  currentQuestion: Promise<Question>;
-  answered = false;
+  private title = 'Welcome to the F1-Quiz!';
+  private currentQuestion: Promise<Question>;
+  private answered = false;
 
   // advantage via @Inject: we do not have to import the class QuizService here => no Dependency
-  constructor(
-    private quizService,
-    private numberOfQuestions: number,
+  protected constructor(
+    private quizService: QuizService,
+    private activatedRoute: ActivatedRoute,
     private router: Router,
-    private resultURL: String) { }
+    private resultURL: string) { }
 
   ngOnInit() {
     this.quizService.reset();
-    this.quizService.yearRange = quizYearRange;
+    try {
+      this.quizService.yearRange = JSON.parse(this.activatedRoute.snapshot.paramMap.get('period'));
+      this.quizService.numberOfQuestions = parseInt(this.activatedRoute.snapshot.paramMap.get('numberOfQuestions'));
+    } finally {}
+    console.log(this.quizService.yearRange);
+    console.log(this.quizService.numberOfQuestions);
     this.getNextQuestion();
   }
 
-  getNextQuestion() {
+  private getNextQuestion() {
     // we do not need await here => await waits for the promise to be resolved, but we do not care, because our
     // template handles the promise for us (currentQuestions | async)
     // so actually, with await this would not work!
@@ -30,16 +35,21 @@ export abstract class QuizComponent implements OnInit {
     this.answered = false;
   }
 
-  answerQuestion(index: number) {
+  private answerQuestion(index: number) {
     if (this.answered === true) {
       return;
     }
     this.answered = true;
 
     this.quizService.answerQuestion(index);
-    if (this.numberOfQuestions === this.quizService.answeredQuestions.length) {
+    if (this.quizService.quizFinished()) {
       console.log('finished asking questions!');
-      this.router.navigate([this.resultURL]);
+      console.log(this.quizService.yearRange);
+      let resultParameters = {
+        'numberOfQuestions': this.quizService.numberOfQuestions,
+        'period': JSON.stringify(this.quizService.yearRange),
+      };
+      this.router.navigate([this.resultURL, resultParameters]);
       return;
     }
     this.getNextQuestion(); // otherwise get the next question

@@ -15,7 +15,7 @@ export class WinnerQuizService extends QuizService {
     return this.sendApiRequest(ergastURL + year + raceResultsURL + finishingPosition + '.json');
   }
 
-  protected getDriverName(raceResults: any): String {
+  protected getDriverName(raceResults: any): string {
     const driver = raceResults.Results[0].Driver;
     return `${driver.givenName} ${driver.familyName}`;
   }

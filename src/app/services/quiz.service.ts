@@ -10,14 +10,15 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export abstract class QuizService {
 
-  protected _alreadyAsked: String[] = []; // idea: instead of tuple: YYYYRR (year+racenumber)
+  protected _alreadyAsked: string[] = []; // idea: instead of tuple: YYYYRR (year+racenumber)
   protected _falseAnswerCount = 0;
   protected _correctAnswerCount = 0;
   protected _answeredQuestions: Question[] = [];
   protected _currentQuestion: Question;
   protected _yearRange: number[] = [1950, new Date().getFullYear()]; // those are the default values
+  protected _numberOfQuestions: number = 5;
 
-  constructor(private http: Http, private questionText: String) { }
+  protected constructor(private http: Http, private questionText: string) { }
 
   get currentQuestion() {
     return this._currentQuestion;
@@ -35,22 +36,44 @@ export abstract class QuizService {
     return this._answeredQuestions;
   }
 
+  get numberOfQuestions(): number {
+    return this._numberOfQuestions;
+  }
+
+  get yearRange(): number[] {
+    return this._yearRange;
+  }
+
   set yearRange(range) {
+    this.setYearRangeMinMax(range, 1950, new Date().getFullYear());
+  }
+
+  set numberOfQuestions(noq: number) {
+    this.setValidNumberOfQuestions(noq);
+  }
+
+  protected setValidNumberOfQuestions(noq: number) {
+    this._numberOfQuestions = (noq > 0 && noq <= 40) ? noq : 5;
+  }
+
+  protected setYearRangeMinMax(range: number[], minYear: number, maxYear: number) {
     // validate input first
     if (range[0] > range[1]) {
       return;
     }
-    if (range[0] < 1950) {
-      range[0] = 1950;
+    if (range[0] < minYear) {
+      range[0] = minYear;
     }
-    if (range[1] > new Date().getFullYear()) {
-      range[1] = new Date().getFullYear();
+    if (range[1] > maxYear) {
+      range[1] = maxYear;
+    }
+    if (range[0] > range[1]) {
+      return;
     }
     this._yearRange = range;
   }
 
-
-  reset() {
+  public reset() {
     this._alreadyAsked       = [];
     this._falseAnswerCount   = 0;
     this._correctAnswerCount = 0;
@@ -58,14 +81,18 @@ export abstract class QuizService {
     this._currentQuestion    = null;
   }
 
-  getCorrectPercentage() {
+  public quizFinished(): boolean {
+    return this._numberOfQuestions === this._answeredQuestions.length;
+  }
+
+  public getCorrectPercentage() : number {
     if (this._correctAnswerCount + this._falseAnswerCount === 0) {
       return 0;
     }
     return (this._correctAnswerCount / (this._correctAnswerCount + this._falseAnswerCount)) * 100;
   }
 
-  answerQuestion(answerIndex: number) {
+  public answerQuestion(answerIndex: number) {
     this._currentQuestion.userAnswerIndex = answerIndex;
     // was the question answered correctly?
     if (this._currentQuestion.correctAnswerIndex === answerIndex) {
@@ -84,7 +111,7 @@ export abstract class QuizService {
 
   // finds a question which we have not asked yet, generates answers to the question
   // (weighted by finishing position), and sets the currentQuestion.
-  async getNewQuestion(): Promise<Question> {
+  public async getNewQuestion(): Promise<Question> {
     // 1. get random season between the two years (standard: 1950 and current year)
     const year = randomIntFromInterval(this._yearRange[0], this._yearRange[1]);
     // 2. send the request
@@ -120,14 +147,14 @@ export abstract class QuizService {
     return this.createQuestion(selectedDrivers, correctAnswer, `${this.questionText} ${year} ${raceName}?`);
   }
 
-  protected selectDriversFromWheelOfFortune (listOfPoints: any[], correctAnswer: String): String[] {
+  protected selectDriversFromWheelOfFortune (listOfPoints: any[], correctAnswer: string): string[] {
     const wheelOfFortune = new WheelOfFortuneService(listOfPoints);
     const selectedDrivers = wheelOfFortune.selectFromWheelOfFortune(3);
     selectedDrivers.push(correctAnswer);
     return selectedDrivers;
   }
 
-  protected createQuestion (driverArray: String[], correctAnswer: String, questionText: String): Promise<Question> {
+  protected createQuestion (driverArray: string[], correctAnswer: string, questionText: string): Promise<Question> {
     // shuffle answers & save new index of the correct answer
     shuffle(driverArray);
 
@@ -168,7 +195,7 @@ export abstract class QuizService {
     return this.reduceDriversPointsList(driversPointsList, winnerName);
   }
 
-  protected reduceDriversPointsList (driversPointsList: (string|number)[][], correctAnswer: String): Promise<any> {
+  protected reduceDriversPointsList (driversPointsList: (string|number)[][], correctAnswer: string): Promise<any> {
     // filter out all the columns with the correctAnswer
     driversPointsList = driversPointsList.filter((elem) => elem[0] !== correctAnswer);
 
@@ -188,7 +215,7 @@ export abstract class QuizService {
   }
 
   // helper for getting the drivername out of a result of a race.
-  protected abstract getDriverName(raceResults: any): String;
+  protected abstract getDriverName(raceResults: any): string;
 
   protected abstract getApiResults(year: number, finishingPosition: number): any;
 

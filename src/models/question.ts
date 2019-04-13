@@ -1,7 +1,7 @@
 export class Question {
   private _userAnswerIndex = -1;
 
-  constructor(private _question: String, private _answers: String[], private _correctAnswerIndex: number) {}
+  constructor(private _question: string, private _answers: string[], private _correctAnswerIndex: number) {}
 
   toString() {
     return `${this._question} ${this._answers} ${this._correctAnswerIndex} ${this.isCorrect()}`;
