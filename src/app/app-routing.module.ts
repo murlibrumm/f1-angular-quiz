@@ -11,12 +11,17 @@ import { PolePositionQuizResultsComponent } from './resultComponents/polePositio
 import { WorldChampionQuizResultsComponent } from './resultComponents/worldChampionQuizResults.component';
 
 import { WQRoute, PPQRoute, WCQRoute, WQRRoute, PPQRRoute, WCQRRoute,
-  welcomeRoute, statisticsRoute } from './../utils/constants';
+  welcomeRoute, statisticsRoute, quizSettingsRoute } from './../utils/constants';
+import {QuizSettingsComponent} from "./quiz-settings/quiz-settings.component";
 
 const appRoutes: Routes = [
   {
     path: welcomeRoute,
     component: WelcomeComponent,
+  },
+  {
+    path: quizSettingsRoute,
+    component: QuizSettingsComponent,
   },
   {
     path: WQRoute,

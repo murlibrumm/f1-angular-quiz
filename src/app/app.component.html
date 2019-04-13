@@ -18,13 +18,13 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active">
-          <a class="nav-link" routerLink="/winnerQuiz">Race Winner Quiz</a>
+          <a class="nav-link" [routerLink]="['/quizSettings', 'winnerQuiz']">Race Winner Quiz</a>
         </li>
         <li routerLinkActive="active">
-          <a class="nav-link" routerLink="/polePositionQuiz">Pole Position Quiz</a>
+          <a class="nav-link" [routerLink]="['/quizSettings', 'polePositionQuiz']">Pole Position Quiz</a>
         </li>
         <li routerLinkActive="active">
-          <a class="nav-link" routerLink="/worldChampionQuiz">World Champion Quiz</a>
+          <a class="nav-link" [routerLink]="['/quizSettings', 'worldChampionQuiz']">World Champion Quiz</a>
         </li>
         <!--<li routerLinkActive="active">
           <a class="nav-link" routerLink="/statistics">Statistics</a>

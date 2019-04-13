@@ -20,6 +20,7 @@ const WCQRRoute = 'worldChampionQuizResults';
 
 const welcomeRoute = '';
 const statisticsRoute = 'statistics';
+const quizSettingsRoute = 'quizSettings/:quiz';
 
 const winQuestion = 'Which driver won the';
 const ppQuestion  = 'Which driver took pole position for the';
@@ -30,6 +31,6 @@ const quizYearRange = [1950, 2017];
 
 export { ergastURL, raceResultsURL, polePositionURL, worldChampionURL,
 WQRoute, PPQRoute, WCQRoute, WQRRoute, PPQRRoute, WCQRRoute,
-welcomeRoute, statisticsRoute,
+welcomeRoute, statisticsRoute, quizSettingsRoute,
 winQuestion, ppQuestion, wdcQuestion,
 numberOfQuestions, quizYearRange };

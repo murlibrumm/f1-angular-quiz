@@ -1,0 +1,37 @@
+<div class="container">
+  <h1>Quiz Settings:</h1>
+
+  <form (ngSubmit)="onSubmit()" #quizSettingsForm="ngForm">
+    <div class="row">
+      <div class="col-xs-12 col-sm-6">
+        <div class="form-group">
+          <label for="numberOfQuestions">Number of Questions</label>
+          <select class="form-control" id="numberOfQuestions"
+                  required
+                  [(ngModel)]="model._numberOfQuestions" name="numberOfQuestions">
+            <option *ngFor="let n of numberOfQuestions" [value]="n">{{n}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-xs-12 col-sm-6">
+        <div class="form-group">
+          <label for="period">Period</label>
+          <select class="form-control" id="period"
+                  required
+                  [(ngModel)]="model._period" name="period">
+            <option *ngFor="let p of Object.keys(periods)" [value]="p">{{p}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <button type="submit" class="btn btn-success" [disabled]="!quizSettingsForm.form.valid">Submit</button>
+      </div>
+    </div>
+
+  </form>
+
+</div>

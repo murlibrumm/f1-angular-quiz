@@ -20,6 +20,8 @@ import { PolePositionQuizResultsComponent } from './resultComponents/polePositio
 import { WorldChampionQuizResultsComponent } from './resultComponents/worldChampionQuizResults.component';
 
 import { numberOfQuestions, quizYearRange } from '../utils/constants';
+import { QuizSettingsComponent } from './quiz-settings/quiz-settings.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -32,12 +34,15 @@ import { numberOfQuestions, quizYearRange } from '../utils/constants';
     WinnerQuizResultsComponent,
     PolePositionQuizResultsComponent,
     WorldChampionQuizResultsComponent,
+    QuizSettingsComponent,
   ],
   imports: [
     BrowserModule,
     HttpModule,
     AppRoutingModule,
+    FormsModule,
   ],
+  entryComponents: [QuizSettingsComponent],
   providers: [ // Dependency Injection!
     {provide: 'winnerQuizService', useClass: WinnerQuizService},
     {provide: 'polePositionQuizService', useClass: PolePositionQuizService},
