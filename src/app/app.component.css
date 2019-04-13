@@ -11,3 +11,17 @@
   background-position-y: -10px;
   background-repeat: no-repeat;
 }
+
+@media (max-width: 767px) {
+  .navbar-brand div {
+    position: relative;
+    top: 10px;
+    margin: 0px 14px;
+    width: 100px;
+    height: 33px;
+    background: url(../ferrari-vector.png);
+    background-size: 100px 50px;
+    background-position-y: -7px;
+    background-repeat: no-repeat;
+  }
+}

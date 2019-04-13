@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { ergastURL, raceResultsURL } from '../../utils/constants';
 import { winQuestion } from '../../utils/constants';
-import 'rxjs/add/operator/map';
 
 
 @Injectable()

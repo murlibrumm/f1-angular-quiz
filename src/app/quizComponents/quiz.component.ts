@@ -31,6 +31,7 @@ export abstract class QuizComponent implements OnInit {
     // template handles the promise for us (currentQuestions | async)
     // so actually, with await this would not work!
     this.currentQuestion = this.quizService.getNewQuestion();
+    this.title = 'Question ' + (this.quizService.answeredQuestions.length + 1) +  '/' + this.quizService.numberOfQuestions;
     console.log(this.quizService.correctAnswerCount);
     this.answered = false;
   }

@@ -4,7 +4,6 @@ import { Http } from '@angular/http';
 import { ergastURL, worldChampionURL, wdcQuestion } from '../../utils/constants';
 import { randomIntFromInterval, shuffle } from '../../utils/utils';
 import { Question } from '../../models/question';
-import 'rxjs/add/operator/map';
 
 
 @Injectable()

@@ -1,23 +1,23 @@
-<div class="resultsBox">
-  <div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" 
+<div class="resultsBox col-12 col-md-6">
+  <div class="progress mt-4">
+    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
     [style.width]="quizService.getCorrectPercentage()+'%'">
       <span [ngStyle]="{'color': quizService.getCorrectPercentage() > 50 ? 'white' : 'black'}">{{ (quizService.getCorrectPercentage()) | number : '1.2-2' }}%</span>
     </div>
   </div>
 
-  <a class="nav-link" [routerLink]="['/' + playAgainURL, playAgainParameters]" routerLinkActive="active">
-    <button>Play Again!</button>
+  <a class="nav-link play-again-link mt-2 mb-4" [routerLink]="['/' + playAgainURL, playAgainParameters]" routerLinkActive="active">
+    <button class="btn btn-primary">Play Again!</button>
   </a>
 
-  <div *ngFor="let question of quizService.answeredQuestions" class="questionResult">
+  <div *ngFor="let question of quizService.answeredQuestions" class="questionResult mb-4">
     <h4>{{question.question}}</h4>
-    <span class="label" [ngClass]="{'label-success': question.isCorrect(), 
-    'label-danger': !question.isCorrect()}">
+    <span class="badge" [ngClass]="{'badge-success': question.isCorrect(),
+    'badge-danger': !question.isCorrect()}">
       Your Answer: {{question.answers[question.userAnswerIndex]}}
     </span>
     <div *ngIf="!question.isCorrect()">
-      <span class="label label-success">
+      <span class="badge badge-success">
         Correct Answer: {{question.answers[question.correctAnswerIndex]}}
       </span>
     </div>

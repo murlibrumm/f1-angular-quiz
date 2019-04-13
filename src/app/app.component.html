@@ -1,13 +1,10 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-expand-md navbar-light bg-light">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
-      data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+      data-target="#f1-navbar-collapse" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
       </button>
       <a class="navbar-brand" href="#">
         <div></div>
@@ -15,7 +12,7 @@
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse" id="f1-navbar-collapse">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active">
           <a class="nav-link" [routerLink]="['/quizSettings', 'winnerQuiz']">Race Winner Quiz</a>

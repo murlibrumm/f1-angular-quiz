@@ -9,12 +9,12 @@ Below are two screenshots:
 
 Quiz page:
 
-![World champion quiz page](/readmeImg/wdcQuiz.jpg?raw=true "World champion quiz page")
+![World champion quiz page](/readmeImg/wdcQuiz.png?raw=true "World champion quiz page")
 
 <br />
 Results page:
 
-![World champion quiz results page](/readmeImg/wdcQuizResults.jpg?raw=true "World champion quiz results page")
+![World champion quiz results page](/readmeImg/wdcQuizResults.png?raw=true "World champion quiz results page")
 
 ## Development server
 

@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 import { randomIntFromInterval, shuffle } from '../../utils/utils';
 import { ergastURL, raceResultsURL } from '../../utils/constants';
 import { Question } from '../../models/question';
-import 'rxjs/add/operator/map';
+import { map } from "rxjs/operators";
 
 
 @Injectable()
@@ -222,7 +222,7 @@ export abstract class QuizService {
   protected sendApiRequest(URL: string): any {
     return new Promise((resolve, reject) => {
       this.http.get(URL)
-      .map((res) => res.json())
+      .pipe(map((res) => res.json()))
       .subscribe((data) => {
         resolve(data.MRData);
       }, error => reject(error));

@@ -3,7 +3,7 @@
 
   <form (ngSubmit)="onSubmit()" #quizSettingsForm="ngForm">
     <div class="row">
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-12 col-sm-6">
         <div class="form-group">
           <label for="numberOfQuestions">Number of Questions</label>
           <select class="form-control" id="numberOfQuestions"
@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-12 col-sm-6">
         <div class="form-group">
           <label for="period">Period</label>
           <select class="form-control" id="period"
@@ -27,7 +27,7 @@
     </div>
 
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <button type="submit" class="btn btn-success" [disabled]="!quizSettingsForm.form.valid">Submit</button>
       </div>
     </div>

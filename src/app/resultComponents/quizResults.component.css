@@ -1,6 +1,13 @@
 .resultsBox {
-  width: 500px;
   margin: 0px auto;
+}
+
+.questionResult .badge {
+  font-size: 0.9em;
+}
+
+.play-again-link {
+  padding: 0px;
 }
 
 .progress {

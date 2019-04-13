@@ -4,12 +4,15 @@
   </h1>
   <h2>
     {{(currentQuestion | async)?.question}}
-  </h2> 
-  <div class="answerBox" *ngIf="(currentQuestion | async)">
-    <button type="button" class="btn btn-primary" 
-    *ngFor="let answer of (currentQuestion | async)?.answers, let i = index" (click)="answerQuestion(i)" >
-      {{answer}}
-    </button>
+  </h2>
+  <div class="answerBox col-12 col-md-6" *ngIf="(currentQuestion | async)">
+    <div class="row">
+      <div class="col-12 col-md-6 mb-2 mt-2" *ngFor="let answer of (currentQuestion | async)?.answers, let i = index">
+        <button type="button" class="btn btn-primary btn-block pt-3 pb-3" (click)="answerQuestion(i)" >
+          {{answer}}
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
